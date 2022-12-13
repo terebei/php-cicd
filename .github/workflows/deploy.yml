@@ -31,11 +31,7 @@ jobs:
         if echo "$GITHUB_REF_NAME" | grep -q "^dev-.*";  then export ENV=development; fi
         if echo "$GITHUB_REF_NAME" | grep -q "^stg-.*";  then export ENV=staging; fi
         if echo "$GITHUB_REF_NAME" | grep -q "^prod-.*"; then export ENV=production; fi
-        export APP_NAME=${GITHUB_REPOSITORY#*/}
-
-        env
-        export
-        echo $GITHUB_REF_NAME
+        export APP_NAME=`echo ${GITHUB_REPOSITORY#*/} | tr '[:upper:]' '[:lower:]'`
 
         export IMAGE_NAME=`echo ghcr.io/${{ github.actor }}/${APP_NAME} | tr '[:upper:]' '[:lower:]'`
         export IMAGE_NAME=`echo ghcr.io/${GITHUB_REPOSITORY_OWNER}/${APP_NAME} | tr '[:upper:]' '[:lower:]'`
