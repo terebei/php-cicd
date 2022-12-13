@@ -25,10 +25,6 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
 
-    # Setup buildpacks to build image
-    - name: Setup buildpacks
-      uses: buildpacks/github-actions/setup-pack@main
-
     - name: Setup ENV
       run: |
         export ENV=development
