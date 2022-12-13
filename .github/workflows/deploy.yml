@@ -1,0 +1,90 @@
+
+---
+
+name: cloudrun-deploy
+
+on:
+  workflow_call:
+
+
+jobs:
+  setup-build-publish-deploy:
+    name: Setup, Build, Publish, and Deploy
+    runs-on: self-hosted
+    steps:
+    - name: Checkout
+      uses: actions/checkout@master
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+
+    - name: Log in to the Container registry
+      uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    # Setup buildpacks to build image
+    - name: Setup buildpacks
+      uses: buildpacks/github-actions/setup-pack@main
+
+    - name: Setup ENV
+      run: |
+        export ENV=development
+        if echo "$GITHUB_REF_NAME" | grep -q "^dev-.*";  then export ENV=development; fi
+        if echo "$GITHUB_REF_NAME" | grep -q "^stg-.*";  then export ENV=staging; fi
+        if echo "$GITHUB_REF_NAME" | grep -q "^prod-.*"; then export ENV=production; fi
+        export APP_NAME=${GITHUB_REPOSITORY#*/}
+
+        export IMAGE_NAME=`echo ghcr.io/${{ github.actor }}/${APP_NAME} | tr '[:upper:]' '[:lower:]'`
+        export IMAGE_NAME=`echo ghcr.io/${GITHUB_REPOSITORY_OWNER}/${APP_NAME} | tr '[:upper:]' '[:lower:]'`
+        	
+        sed -i "s/php/${APP_NAME}/" elastic-apm-custom.ini
+
+        echo "APP_NAME=${APP_NAME}" >> $GITHUB_ENV
+        echo "ENV=${ENV}" >> $GITHUB_ENV
+        echo "IMAGE_NAME=${IMAGE_NAME}" >> $GITHUB_ENV
+ 
+    # Build the Docker image
+    - name: Build and push
+      uses: docker/build-push-action@v3
+      with:
+        context: .
+        push: true
+        tags: "${{ env.IMAGE_NAME }}:${{ env.ENV}},{{ env.IMAGE_NAME }}:${GITHUB_REF_NAME}"
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+
+      # Deploy the Docker image to the GKE cluster
+    - name: Deploy
+      run: |
+        export APP_DOMAIN=ovh.syabe-tech.com
+        export CNT_NAME=${{ env.APP_NAME }}-${{ env.ENV }}
+        TRAEFIK_RULE="Host(\`${{ env.APP_NAME }}-${{ env.ENV }}.${APP_DOMAIN}\`,\`${{ env.APP_NAME }}-${{ env.ENV }}\`)"
+
+        docker rm -f ${CNT_NAME}
+        docker run -d --network proxy --name CNT_NAME} \
+         -e PORT=80 --label traefik.enable=true \
+         --label traefik.docker.network=proxy \
+         --label traefik.http.routers.${CNT_NAME}.rule=$TRAEFIK_RULE \
+         --label traefik.http.routers.${CNT_NAME}.service=${CNT_NAME} \
+         --label traefik.http.routers.${CNT_NAME}.entrypoints=http \
+         --label traefik.http.services.${CNT_NAME}.loadbalancer.server.port=80 \
+         --restart always ${{ env.IMAGE_NAME }}:${GITHUB_REF_NAME}
+
+        docker network connect monitoring $CNT_NAME
+        docker network connect ${{ env.ENV }}_${{ env.ENV }} $CNT_NAME
+        
+    - name: send telegram message on push
+      uses: appleboy/telegram-action@master
+      with:
+        to: ${{ secrets.TELEGRAM_TO }}
+        token: ${{ secrets.TELEGRAM_TOKEN }}
+        message: |
+          ${{ github.actor }} created commit:
+          Commit message: ${{ github.event.commits[0].message }}
+          Repository: ${{ github.repository }}
+          See changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}
+          
+          ${{ env.APP_NAME }}-${{ env.ENV }} deployed !
