@@ -72,7 +72,7 @@ jobs:
         TRAEFIK_RULE="Host(\`${{ env.APP_NAME }}-${{ env.ENV }}.${APP_DOMAIN}\`,\`${{ env.APP_NAME }}-${{ env.ENV }}\`)"
 
         docker rm -f ${CNT_NAME}
-        docker run -d --network proxy --name CNT_NAME} \
+        docker run -d --network proxy --name ${CNT_NAME} \
          -e PORT=80 --label traefik.enable=true \
          --label traefik.docker.network=proxy \
          --label traefik.http.routers.${CNT_NAME}.rule=$TRAEFIK_RULE \
