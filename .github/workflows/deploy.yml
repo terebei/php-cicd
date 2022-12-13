@@ -59,7 +59,7 @@ jobs:
     - name: Deploy
       run: |
         export APP_DOMAIN=ovh.syabe-tech.com
-        export CNT_NAME=${{ env.APP_NAME }}-${{ env.ENV }}
+        export CNT_NAME=${{ env.ENV }}-${{ env.APP_NAME }}
 
         TRAEFIK_RULE="Host(\`${{ env.APP_NAME }}-${{ env.ENV }}.${APP_DOMAIN}\`,\`${{ env.APP_NAME }}-${{ env.ENV }}\`)"
 
