@@ -46,6 +46,8 @@ jobs:
         echo "ENV=${ENV}" >> $GITHUB_ENV
         echo "IMAGE_NAME=${IMAGE_NAME}" >> $GITHUB_ENV
  
+    # - name: Create Dockerfile 
+      
     # Build the Docker image
     - name: Build and push
       uses: docker/build-push-action@v3
