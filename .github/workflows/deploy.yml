@@ -74,7 +74,7 @@ jobs:
          --label traefik.docker.network=proxy \
          --label traefik.http.routers.${CNT_NAME}.rule=$TRAEFIK_RULE \
          --label traefik.http.routers.${CNT_NAME}.service=${CNT_NAME} \
-         --label traefik.http.routers.${CNT_NAME}.entrypoints=http \
+         --label traefik.http.routers.${CNT_NAME}.entrypoints=http,https \
          --label traefik.http.services.${CNT_NAME}.loadbalancer.server.port=80 \
          --restart always ${{ env.IMAGE_NAME }}:${GITHUB_REF_NAME}
 
