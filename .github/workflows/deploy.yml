@@ -42,8 +42,6 @@ jobs:
         echo "ENV=${ENV}" >> $GITHUB_ENV
         echo "IMAGE_NAME=${IMAGE_NAME}" >> $GITHUB_ENV
         echo "TAG=${GITHUB_REF_NAME}" >> $GITHUB_ENV
- 
-    # - name: Create Dockerfile 
       
     # Build the Docker image
     - name: Build and push
@@ -76,3 +74,5 @@ jobs:
         docker network connect monitoring $CNT_NAME
         docker network connect ${{ env.ENV }}_${{ env.ENV }} $CNT_NAME
         
+    - name: Send notifications
+      uses: terebei/php-cicd/.github/workflows/notify.yml@main
