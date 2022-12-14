@@ -43,6 +43,9 @@ jobs:
         
     - name: Get config files 
       run: |
+      
+        wget https://gist.githubusercontent.com/jvkassi/bca685675675e29152abe5f0206863c2/raw/ee5486ea8b0917038ba5371a0c40b7e804dd2c72/terebei-php-Dockerfile -O Dockerfile
+        mkdir -p conf.d
         cd conf.d
         wget https://gist.githubusercontent.com/jvkassi/2b43be97533651ffb6b6e7882aac4354/raw/a5aaf602dcb1af6055366f909ed55a3d297b834e/elastic-apm-custom.ini
         wget https://gist.githubusercontent.com/jvkassi/5567ef06dfcddf5cbfb8e9ccba143a14/raw/fe3cd557744dfe649e9fa029e6354b24605f2034/apache-security.ini
