@@ -74,5 +74,6 @@ jobs:
         docker network connect monitoring $CNT_NAME
         docker network connect ${{ env.ENV }}_${{ env.ENV }} $CNT_NAME
         
-    - name: Send notifications
-      uses: terebei/php-cicd/.github/workflows/notify.yml@main
+  notifications:
+    uses: terebei/base-cicd/.github/workflows/notify.yml@main
+    needs: setup-build-publish-deploy
