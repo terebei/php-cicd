@@ -48,7 +48,8 @@ jobs:
         wget https://gist.githubusercontent.com/jvkassi/5567ef06dfcddf5cbfb8e9ccba143a14/raw/12a4e82431d376c05c7f8491f42a3bcf507e04f4/apache-security.conf -O security.conf
      
         sed -i "s/php/${APP_NAME}/" elastic-apm-custom.ini
-               
+        sed -i "s/R_ENVIRONNEMENT/${{ env.ENV }}/" elastic-apm-custom.ini
+           
     # Build the Docker image
     - name: Build and push
       uses: docker/build-push-action@v3
