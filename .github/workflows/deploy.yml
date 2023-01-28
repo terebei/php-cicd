@@ -74,7 +74,7 @@ jobs:
         docker run -d --network proxy --name ${CNT_NAME} \
          -e PORT=80 --label traefik.enable=true \
          --label co.elastic.logs/fileset.stdout=access --label co.elastic.logs/fileset.stderr=error \
-         --label co.elastic.logs/module=apache"
+         --label co.elastic.logs/module=apache" \
          --label traefik.docker.network=proxy \
          --label traefik.http.routers.${CNT_NAME}.rule=$TRAEFIK_RULE \
          --label traefik.http.routers.${CNT_NAME}.service=${CNT_NAME} \
