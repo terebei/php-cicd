@@ -68,7 +68,7 @@ jobs:
         export APP_DOMAIN=ovh.syabe-tech.com
         export CNT_NAME=${{ env.ENV }}-${{ env.APP_NAME }}
 
-        TRAEFIK_RULE="Host(\`${{ env.APP_NAME }}-${{ env.ENV }}.${APP_DOMAIN}\`,\`${{ env.APP_NAME }}-${{ env.ENV }}\`)"
+        TRAEFIK_RULE="Host(\`${{ env.APP_NAME }}-${{ env.ENV }}.${APP_DOMAIN}\`)"
 
         docker rm -f ${CNT_NAME}
         docker run -d --network proxy --name ${CNT_NAME} \
