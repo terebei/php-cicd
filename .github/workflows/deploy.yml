@@ -45,7 +45,7 @@ jobs:
         touch composer.json
         VERSION=$(grep '"php"' composer.json | awk '{ print $3 }' | tr -d '"^' | cut -d . -f 1,2)
         PHP_VERSION=${VERSION:-7.4}
-        wget https://gist.githubusercontent.com/jvkassi/bca685675675e29152abe5f0206863c2/raw/c8974e2dd4f896b59c71c7fc6025cc28f23367db/terebei-php-Dockerfile -O Dockerfile
+        wget https://gist.githubusercontent.com/jvkassi/bca685675675e29152abe5f0206863c2/raw/508f8b92fe903ebebd347c37f47879b2071e5512/terebei-php-Dockerfile -O Dockerfile
         sed -i "s/PHP_VERSION/${PHP_VERSION}/" Dockerfile 
           
         mkdir -p conf.d
