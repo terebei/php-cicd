@@ -32,13 +32,14 @@ jobs:
         if echo "$GITHUB_REF_NAME" | grep -q "^prod-.*"; then export ENV=production; fi
         export APP_NAME=`echo ${GITHUB_REPOSITORY#*/} | tr '[:upper:]' '[:lower:]'`
         export APP_NAME="${APP_NAME//_/-}"
-        export CNT_NAME=${{ env.ENV }}-${{ env.APP_NAME }}
         
         export IMAGE_NAME=`echo ghcr.io/${GITHUB_REPOSITORY_OWNER}/${APP_NAME} | tr '[:upper:]' '[:lower:]'`
         echo "APP_NAME=${APP_NAME}" >> $GITHUB_ENV
         echo "ENV=${ENV}" >> $GITHUB_ENV
         echo "IMAGE_NAME=${IMAGE_NAME}" >> $GITHUB_ENV
         echo "TAG=${GITHUB_REF_NAME}" >> $GITHUB_ENV
+        
+        export CNT_NAME=${ENV}-${APP_NAME}
         echo "CNT_NAME=${CNT_MAME}" >> $GITHUB_ENV
         
     - name: Get config files 
