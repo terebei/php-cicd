@@ -48,11 +48,14 @@ jobs:
         touch composer.json
         VERSION=$(grep '"php"' composer.json | awk '{ print $3 }' | tr -d '"^' | cut -d . -f 1,2)
         PHP_VERSION=${VERSION:-7.4}
+        export CNT_NAME=${{ env.CNT_NAME }}
+
+        echo $CNT_NAME
         
         DOCKERFILE_URL=https://gist.githubusercontent.com/jvkassi/bca685675675e29152abe5f0206863c2/raw/f6260dcb031429a4db7dc1cdebfa711d2d2cc237/terebei-php-Dockerfile
         wget $DOCKERFILE_URL -O Dockerfile
         sed -i "s/PHP_VERSION/${PHP_VERSION}/" Dockerfile 
-        sed -i "s/APP_NAME/${{ env.CNT_MAME }}/" Dockerfile
+        sed -i "s/APP_NAME/${CNT_MAME}/" Dockerfile
           
         mkdir -p conf.d
         cd conf.d
