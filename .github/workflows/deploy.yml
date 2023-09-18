@@ -32,12 +32,14 @@ jobs:
         if echo "$GITHUB_REF_NAME" | grep -q "^prod-.*"; then export ENV=production; fi
         export APP_NAME=`echo ${GITHUB_REPOSITORY#*/} | tr '[:upper:]' '[:lower:]'`
         export APP_NAME="${APP_NAME//_/-}"
-
+        export CNT_NAME=${{ env.ENV }}-${{ env.APP_NAME }}
+        
         export IMAGE_NAME=`echo ghcr.io/${GITHUB_REPOSITORY_OWNER}/${APP_NAME} | tr '[:upper:]' '[:lower:]'`
         echo "APP_NAME=${APP_NAME}" >> $GITHUB_ENV
         echo "ENV=${ENV}" >> $GITHUB_ENV
         echo "IMAGE_NAME=${IMAGE_NAME}" >> $GITHUB_ENV
         echo "TAG=${GITHUB_REF_NAME}" >> $GITHUB_ENV
+        echo "CNT_NAME=${CNT_MAME}" >> $GITHUB_ENV
         
     - name: Get config files 
       run: |
@@ -70,8 +72,8 @@ jobs:
         build-args: |
           NEW_RELIC_AGENT_VERSION=10.10.0.1
           NEW_RELIC_LICENSE_KEY=d9bffbdbb03be53b81668904689eef1aFFFFNRAL
-          NEW_RELIC_APPNAME="${APP_NAME}-${ENV}"
-          IMAGE_NAME="${ENV}-${APP_NAME}"
+          NEW_RELIC_APPNAME=${{ env.CNT_NAME }}
+          IMAGE_NAME=${{ env.CNT_NAME }}
 #         tags: "${{ env.IMAGE_NAME }}:${{ env.ENV}},${{ env.IMAGE_NAME }}:${{ env.TAG }}"
 
       # Deploy the Docker image to the GKE cluster
