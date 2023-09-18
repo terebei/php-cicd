@@ -40,7 +40,7 @@ jobs:
         echo "TAG=${GITHUB_REF_NAME}" >> $GITHUB_ENV
         
         export CNT_NAME="${ENV}-${APP_NAME}"
-        echo "CNT_NAME=${CNT_MAME}" >> $GITHUB_ENV
+        echo "CNT_NAME=${CNT_NAME}" >> $GITHUB_ENV
         
     - name: Get config files 
       run: |
