@@ -39,7 +39,7 @@ jobs:
         echo "IMAGE_NAME=${IMAGE_NAME}" >> $GITHUB_ENV
         echo "TAG=${GITHUB_REF_NAME}" >> $GITHUB_ENV
         
-        export CNT_NAME=${ENV}-${APP_NAME}
+        export CNT_NAME="${ENV}-${APP_NAME}"
         echo "CNT_NAME=${CNT_MAME}" >> $GITHUB_ENV
         
     - name: Get config files 
@@ -84,7 +84,7 @@ jobs:
     - name: Deploy
       run: |
         export APP_DOMAIN=ovh.syabe-tech.com
-        export CNT_NAME=${{ env.ENV }}-${{ env.APP_NAME }}
+        export CNT_NAME=${{ env.CNT_NAME }}
 
         TRAEFIK_RULE="Host(\`${{ env.APP_NAME }}-${{ env.ENV }}.${APP_DOMAIN}\`)"
 
