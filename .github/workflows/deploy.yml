@@ -79,7 +79,7 @@ jobs:
         cache-to: type=gha,mode=max
         build-args: |
           NEW_RELIC_AGENT_VERSION=10.10.0.1
-          NEW_RELIC_LICENSE_KEY=d9bffbdbb03be53b81668904689eef1aFFFFNRAL
+          NEW_RELIC_LICENSE_KEY=${{ secrets.NEW_RELIC_LICENSE_KEY }}
   # NEW_RELIC_APPNAME=${{ env.CNT_NAME }}
   # IMAGE_NAME=${{ env.CNT_NAME }}
 #         tags: "${{ env.IMAGE_NAME }}:${{ env.ENV}},${{ env.IMAGE_NAME }}:${{ env.TAG }}"
