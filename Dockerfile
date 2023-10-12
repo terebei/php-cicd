@@ -1,3 +1,4 @@
+
 FROM php:PHP_VERSION-apache 
 
 RUN apt-get update && apt-get install -y \
@@ -38,4 +39,7 @@ RUN sed -i -e "s/REPLACE_WITH_REAL_KEY/${NEW_RELIC_LICENSE_KEY}/" \
     
  RUN sed -i -e "s/newrelic.appname.*/newrelic.appname=\"APP_NAME\"/"  \
      $(php -r "echo(PHP_CONFIG_FILE_SCAN_DIR);")/newrelic.ini
+
+COPY --from=composer /usr/bin/composer /usr/bin/composer
+
 
