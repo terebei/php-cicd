@@ -52,7 +52,7 @@ jobs:
 
         echo $CNT_NAME
         
-        DOCKERFILE_URL=https://gist.githubusercontent.com/jvkassi/bca685675675e29152abe5f0206863c2/raw/f6260dcb031429a4db7dc1cdebfa711d2d2cc237/terebei-php-Dockerfile
+        DOCKERFILE_URL=https://raw.githubusercontent.com/terebei/php-cicd/main/Dockerfile
         wget $DOCKERFILE_URL -O Dockerfile
         
         sed -i "s/PHP_VERSION/${PHP_VERSION}/" Dockerfile 
