@@ -2,7 +2,7 @@
 FROM php:PHP_VERSION-apache 
 
 RUN apt-get update && apt-get install -y \
-                vim \
+                vim git unzip \
                 libfreetype6-dev \
                 libjpeg62-turbo-dev \
                 libpng-dev \
