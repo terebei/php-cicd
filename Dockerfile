@@ -43,6 +43,8 @@ RUN sed -i -e "s/REPLACE_WITH_REAL_KEY/${NEW_RELIC_LICENSE_KEY}/" \
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 
 # Run composer install if composer.json is present
-#RUN if [ -f composer.json ]; then composer install; fi
+RUN touch composer.json
+RUN cat composer.json
+RUN if [ -f composer.json ]; then composer install; fi
 
 
