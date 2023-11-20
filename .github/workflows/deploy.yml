@@ -46,10 +46,14 @@ jobs:
       run: |
       
         touch composer.json
+
+        cat composer.json
+        
         VERSION=$(grep '"php"' composer.json | awk '{ print $3 }' | tr -d '"^' | cut -d . -f 1,2)
         PHP_VERSION=${VERSION:-7.4}
         export CNT_NAME=${{ env.CNT_NAME }}
 
+        echo $PHP_VERSION
         echo $CNT_NAME
         
         DOCKERFILE_URL=https://raw.githubusercontent.com/terebei/php-cicd/main/Dockerfile
