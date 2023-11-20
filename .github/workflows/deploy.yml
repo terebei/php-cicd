@@ -57,6 +57,8 @@ jobs:
         
         sed -i "s/PHP_VERSION/${PHP_VERSION}/" Dockerfile 
         sed -i "s/APP_NAME/${CNT_NAME}/" Dockerfile
+
+        cat Dockerfile
         
         mkdir -p conf.d
         cd conf.d
