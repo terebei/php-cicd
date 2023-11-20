@@ -71,8 +71,8 @@ jobs:
         wget https://gist.githubusercontent.com/jvkassi/7814e44f94d05ad1ad5cf00d335ac9d2/raw/07845b99dcf7260d71b03a970395847b371d2350/terebei-php-ini -O security.ini
         
 
-        # sed -i "s/php/${APP_NAME}/" elastic-apm-custom.ini
-        #sed -i "s/R_ENVIRONNEMENT/${{ env.ENV }}/" elastic-apm-custom.ini
+        sed -i "s/php/${APP_NAME}/" elastic-apm-custom.ini
+        sed -i "s/R_ENVIRONNEMENT/${{ env.ENV }}/" elastic-apm-custom.ini
            
     # Build the Docker image
     - name: Build and push
