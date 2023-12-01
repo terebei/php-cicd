@@ -11,7 +11,7 @@ RUN /usr/local/bin/docker-php-ext-install -j$(nproc) gd mysqli pdo pdo_mysql
 
 COPY . /var/www/html
 
-RUN curl -L   https://github.com/elastic/apm-agent-php/releases/download/v1.6.2/apm-agent-php_1.6.2_all.deb -o /tmp/apm.deb
+RUN curl -L https://github.com/elastic/apm-agent-php/releases/download/v1.10.0/apm-agent-php_1.10.0_all.deb
 RUN dpkg -i /tmp/apm.deb
 
 COPY conf.d/elastic-apm-custom.ini /opt/elastic/apm-agent-php/etc/
