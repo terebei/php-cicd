@@ -1,6 +1,7 @@
 
 FROM php:PHP_VERSION-apache 
 
+RUN pecl install redis
 RUN apt-get update && apt-get install -y \
                 vim git unzip \
                 libfreetype6-dev \
@@ -8,10 +9,11 @@ RUN apt-get update && apt-get install -y \
                 libpng-dev \
         && docker-php-ext-configure gd --with-freetype --with-jpeg 
 RUN /usr/local/bin/docker-php-ext-install -j$(nproc) gd mysqli pdo pdo_mysql 
+RUN  /usr/local/bin/docker-php-ext-enable redis
 
 COPY . /var/www/html
 
-RUN curl -L https://github.com/elastic/apm-agent-php/releases/download/v1.10.0/apm-agent-php_1.10.0_all.deb
+RUN curl -L https://github.com/elastic/apm-agent-php/releases/download/v1.10.0/apm-agent-php_1.10.0_all.deb -o /tmp/apm.deb
 RUN dpkg -i /tmp/apm.deb
 
 COPY conf.d/elastic-apm-custom.ini /opt/elastic/apm-agent-php/etc/
