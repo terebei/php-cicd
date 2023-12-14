@@ -38,7 +38,10 @@ RUN curl -L https://download.newrelic.com/php_agent/archive/${NEW_RELIC_AGENT_VE
 RUN sed -i -e "s/REPLACE_WITH_REAL_KEY/${NEW_RELIC_LICENSE_KEY}/" \
     -e '$anewrelic.daemon.address="@newrelic"' \
     $(php -r "echo(PHP_CONFIG_FILE_SCAN_DIR);")/newrelic.ini
-    
+RUN sed -i -e "s/newrelic.license/d"   $(php -r "echo(PHP_CONFIG_FILE_SCAN_DIR);")/newrelic.ini
+
+RUN echo "newrelic.license=${NEW_RELIC_LICENSE_KEY}" >>  $(php -r "echo(PHP_CONFIG_FILE_SCAN_DIR);")/newrelic.ini
+
  RUN sed -i -e "s/newrelic.appname.*/newrelic.appname=\"APP_NAME\"/"  \
      $(php -r "echo(PHP_CONFIG_FILE_SCAN_DIR);")/newrelic.ini
 
